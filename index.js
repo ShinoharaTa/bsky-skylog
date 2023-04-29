@@ -185,7 +185,7 @@ if (result) {
           reply: { parent: firstPost, root: firstPost },
         });
       }
-      await sleep(1000);
+      // await sleep(1000);
     }
 
     time = moment().tz("Asia/Tokyo").format("YYYY/MM/DD HH:mm:ss");
