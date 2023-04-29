@@ -153,7 +153,7 @@ if (result) {
     for (const user of users) {
       try {
         const { posts, reposts, replys } = await getPosts(user.handle);
-        if(posts >= 10) continue;
+        if(posts < 10) continue;
         let text = "@" + user.handle + " さんの集計データ\n";
         text += prevDay.format("YYYY/MM/DD") + " #skylog\n";
         text += "\n";
