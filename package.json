@@ -4,6 +4,9 @@
   "description": "Count of user posts Ranking",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "npm run build && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
@@ -11,7 +14,14 @@
   "license": "ISC",
   "dependencies": {
     "@atproto/api": "^0.2.5",
+    "@babel/core": "^7.23.7",
+    "@babel/preset-env": "^7.23.7",
+    "@babel/preset-typescript": "^7.23.3",
+    "@types/node": "^20.11.16",
+    "@types/node-cron": "^3.0.11",
+    "biome": "^0.3.3",
     "dotenv": "^16.0.3",
-    "moment-timezone": "^0.5.43"
+    "moment-timezone": "^0.5.43",
+    "typescript": "^5.3.3"
   }
 }
