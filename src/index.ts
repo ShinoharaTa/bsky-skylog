@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import * as bskyAgent from "@atproto/api";
+import { BskyAgent, RichText } from "@atproto/api";
 import type { QueryParams } from "@atproto/api/dist/client/types/app/bsky/graph/getFollowers";
 import type { QueryParams as PostQueryParams } from "@atproto/api/dist/client/types/app/bsky/feed/getAuthorFeed";
 import moment from "moment-timezone";
@@ -10,7 +10,7 @@ import { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs"
 dotenv.config();
 
 let self: OutputSchema;
-const agent = new bskyAgent.BskyAgent({ service: "https://bsky.social" });
+const agent = new BskyAgent({ service: "https://bsky.social" });
 const prevDay = moment().tz("Asia/Tokyo").subtract(1, "days").startOf("day");
 const today = moment().tz("Asia/Tokyo").startOf("day");
 
@@ -138,7 +138,7 @@ if (result) {
     text += "2. 一日で通常のポストが10件以上\n";
     text += "3. 一日あたり最大1000投稿まで集計します\n";
     text += "4. 感謝のピザを、Shino3に奢ることができる\n";
-    const rt = new bskyAgent.RichText({ text });
+    const rt = new RichText({ text });
     await rt.detectFacets(agent);
     const firstPost = await agent.post({
       $type: "app.bsky.feed.post",
@@ -159,7 +159,7 @@ if (result) {
         text += `リプ　　　　　：${replys}\n`;
         text += `リポスト　　　：${reposts}\n`;
 
-        const rt = new bskyAgent.RichText({ text });
+        const rt = new RichText({ text });
         await rt.detectFacets(agent);
         await agent.post({
           $type: "app.bsky.feed.post",
@@ -172,7 +172,7 @@ if (result) {
         text += `${prevDay.format("YYYY/MM/DD")}#skylog\n`;
         text += "\n";
         text += "取得に失敗しました\n";
-        const rt = new bskyAgent.RichText({ text });
+        const rt = new RichText({ text });
         await rt.detectFacets(agent);
         await agent.post({
           $type: "app.bsky.feed.post",
@@ -191,7 +191,7 @@ if (result) {
     text += "\n";
     text += "エラーが起きて動いてないよっ！！\n";
     text += "助けてーーー（>__<）\n";
-    const rt = new bskyAgent.RichText({ text });
+    const rt = new RichText({ text });
     await rt.detectFacets(agent);
     const log = await agent.post({
       $type: "app.bsky.feed.post",
