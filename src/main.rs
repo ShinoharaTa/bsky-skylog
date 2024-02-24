@@ -25,11 +25,9 @@ async fn get_all_followers(
         if response.cursor.is_some() {
             current_cursor = response.cursor; // 新しいカーソルで更新
         } else {
-            break;
+            return Ok(all_followers);
         }
     }
-
-    return Ok(all_followers);
 }
 
 #[tokio::main]
