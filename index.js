@@ -49,13 +49,16 @@ const getFollowers = async function (user_name) {
     );
     console.log(data.followers.length);
     const getUsers = data.followers.map((item) => {
+      console.log(item);
       return {
         handle: item.handle,
         name: item.displayName,
       };
     });
     users = users.concat(getUsers);
-    if (data.cursor) {
+    if (data.followers.length < 100) {
+      break;
+    } else if (data.cursor) {
       cursor = data.cursor;
     } else {
       break;
@@ -69,7 +72,7 @@ const getPosts = async function (user_name) {
   let replys = 0;
   let reposts = 0;
   let cursor = null;
-  for (let index = 0; index < 15; index++) {
+  for (let index = 0; index < 30; index++) {
     let request = {
       actor: user_name,
       limit: 100,
@@ -134,14 +137,14 @@ console.log(result);
 if (result) {
   try {
     let time = moment().tz("Asia/Tokyo").format("YYYY/MM/DD HH:mm:ss");
-    await post("集計開始：" + time + "");
     const users = await getFollowers(process.env.AUTHOR);
+    await post("集計開始：" + time + " users: " + users.length);
 
     let text = "ソラログは一日の活動ログをお届けします\n\n";
     text += "1. @skylog.bsky.social をフォローしている\n";
     text += "2. 一日で通常のポストが10件以上\n";
-    text += "3. 一日あたり最大1000投稿まで集計します\n";
-    text += "4. 感謝のピザを、Shino3に奢ることができる\n";
+    text += "3. 集計開始時点から最大3000投稿まで集計します\n";
+    text += "4. しのさんに感謝のピザを贈ることができます\n";
     const rt = new RichText({ text });
     await rt.detectFacets(agent);
     const firstPost = await agent.post({
@@ -153,6 +156,7 @@ if (result) {
     for (const user of users) {
       try {
         const { posts, reposts, replys } = await getPosts(user.handle);
+        console.log(user.handle, posts, reposts, replys);
         if(posts < 10) continue;
         let text = "@" + user.handle + " さんの集計データ\n";
         text += prevDay.format("YYYY/MM/DD") + " #skylog\n";
@@ -185,7 +189,7 @@ if (result) {
           reply: { parent: firstPost, root: firstPost },
         });
       }
-      // await sleep(1000);
+      await sleep(10000);
     }
 
     time = moment().tz("Asia/Tokyo").format("YYYY/MM/DD HH:mm:ss");
