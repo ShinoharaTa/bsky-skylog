@@ -49,16 +49,13 @@ const getFollowers = async function (user_name) {
     );
     console.log(data.followers.length);
     const getUsers = data.followers.map((item) => {
-      console.log(item);
       return {
         handle: item.handle,
         name: item.displayName,
       };
     });
     users = users.concat(getUsers);
-    if (data.followers.length < 100) {
-      break;
-    } else if (data.cursor) {
+    if (data.cursor) {
       cursor = data.cursor;
     } else {
       break;
